@@ -1,5 +1,7 @@
 import requests
 import json
+
+from keyboards.inlines.url_data import url_data
 from loader import dp
 from aiogram import types
 from decouple import config
@@ -17,9 +19,12 @@ async def post_url(message: types.Message):
             'original_url': url
         })
         if response.status_code != 404:
-            await message.reply('URL muvoffaqiyatli yuborildi!')
+            await message.reply('Tekshirilmoqda...')
             data = json.loads(response.content)
-            print(data)
+            reply_markup = await url_data(data)
+            text = f"ℹ {data['video_title']}\n👤 {data['video_author']}\n🕒: {data['video_time']} ```daqiqa```"
+            await message.delete()
+            await message.answer(text=text, reply_markup=reply_markup)
         else:
             await message.reply(f"Uzr nimadur xato - {response.status_code}")
     except requests.HTTPError or requests.ConnectionError as er:
