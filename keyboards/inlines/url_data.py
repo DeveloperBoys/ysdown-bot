@@ -9,18 +9,13 @@ def make_callback_data(itag=None):
 
 
 async def url_data(data):
-    item = 0
     markup = InlineKeyboardMarkup(row_width=2)
 
     results = data['filtered_video']
     for result in results:
-        res = results[result]
-        print("11111111111111111111111111111111111111111")
-        print(result)
-        print("11111111111111111111111111111111111111111")
-        itag = res['itag']
-        resolution = res['resolution']
-        filesize = res['filesize']
+        itag = result['itag']
+        resolution = result['resolution']
+        filesize = result['filesize']
 
         callback_data = make_callback_data(
             itag=itag
